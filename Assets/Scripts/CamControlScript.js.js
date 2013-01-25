@@ -24,4 +24,8 @@ function Update () {
     var Controller = GetComponent(CharacterController);
     var Flags = Controller.Move( MoveDirection * Time.deltaTime);
     grounded = (Flags & CollisionFlags.CollidedBelow) !=0;
+    
+    if(Input.GetAxis("Horizontal")){
+		MoveDirection.y = jumpSpeed;
+    }
 }
