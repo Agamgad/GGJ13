@@ -4,7 +4,8 @@ using System.Collections;
 public class ObstacleGenerator : MonoBehaviour {
 	
 	public Transform toGenerate;
-	public string patternGeneration;
+	public string[] patterns;
+	private int patternGeneration;
 	
 	private GlobalSettings settings;
 	
@@ -32,12 +33,15 @@ public class ObstacleGenerator : MonoBehaviour {
 			float nextBeat = settings.GetBeatProgression();
 			if (nextBeat < lastBeat)
 			{
-				if (patternGeneration[patternPosition] != '.')
-					RandomSpawnMoai();
+				char pos = patterns[patternGeneration][patternPosition];
+				if (pos != '.')
+					SpawnMoai(pos);
 				
 				++patternPosition;
-				if (patternPosition >= patternGeneration.Length)
+				if (patternPosition >= patterns[patternGeneration].Length) {
 					patternPosition = 0;
+					patternGeneration = Random.Range(0,patterns.Length);
+				}
 			}
 			lastBeat = nextBeat;
 		}
@@ -45,11 +49,25 @@ public class ObstacleGenerator : MonoBehaviour {
 	
 	void SpawnMoai(int x, int y) {
 		Transform obj = Instantiate(toGenerate) as Transform;
-		obj.transform.position = new Vector3(x * settings.dodgeRadius,y * settings.dodgeRadius, settings.spawnDistance);
+		obj.transform.position = new Vector3(x * settings.dodgeRadius+0.5f,y * settings.dodgeRadius, settings.spawnDistance);
 		obj.GetComponent<DefaultObstacle>().JumpToPatternPosition(patternPosition);
 	}
 	
 	void RandomSpawnMoai() {
 		SpawnMoai(Random.Range(0,3)-1,Random.Range(0,3)-1);
+	}
+	
+	void SpawnMoai(char pos) {
+		switch(pos) {
+		case 'U':	SpawnMoai( 0, 1);	break;
+		case 'N':	SpawnMoai( 1, 1);	break;
+		case 'R':	SpawnMoai( 1, 0);	break;
+		case 'E':	SpawnMoai( 1,-1);	break;
+		case 'D':	SpawnMoai( 0,-1);	break;
+		case 'S':	SpawnMoai(-1,-1);	break;
+		case 'L':	SpawnMoai(-1, 0);	break;
+		case 'O':	SpawnMoai(-1, 1);	break;
+		default:	SpawnMoai( 0, 0);	break;
+		}
 	}
 }
