@@ -32,11 +32,8 @@ public class ObstacleGenerator : MonoBehaviour {
 			float nextBeat = settings.GetBeatProgression();
 			if (nextBeat < lastBeat)
 			{
-				if (patternGeneration[patternPosition] != '.') {
-					Transform obj = Instantiate(toGenerate) as Transform;
-					obj.transform.position = new Vector3(0.0f,0.0f, settings.spawnDistance);
-					obj.GetComponent<DefaultObstacle>().JumpToPatternPosition(patternPosition);
-				}
+				if (patternGeneration[patternPosition] != '.')
+					RandomSpawnMoai();
 				
 				++patternPosition;
 				if (patternPosition >= patternGeneration.Length)
@@ -44,5 +41,15 @@ public class ObstacleGenerator : MonoBehaviour {
 			}
 			lastBeat = nextBeat;
 		}
+	}
+	
+	void SpawnMoai(int x, int y) {
+		Transform obj = Instantiate(toGenerate) as Transform;
+		obj.transform.position = new Vector3(x * settings.dodgeRadius,y * settings.dodgeRadius, settings.spawnDistance);
+		obj.GetComponent<DefaultObstacle>().JumpToPatternPosition(patternPosition);
+	}
+	
+	void RandomSpawnMoai() {
+		SpawnMoai(Random.Range(0,3)-1,Random.Range(0,3)-1);
 	}
 }

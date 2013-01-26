@@ -22,7 +22,8 @@ public class CamControlScript : MonoBehaviour {
 
 		var hor = 0f;
 		var ver = 0f;
-		float smooth = 2.0f;
+		float smooth = 4.0f;
+		float smoothAngle = 2.0f;
 		float tiltAngle = 30.0f;
 		//float curT = transition.Evaluate(Mathf.Repeat(Time.time, settings.GetBeat()));
 		float curT = transition.Evaluate(settings.GetBeatProgression(4));
@@ -43,7 +44,7 @@ public class CamControlScript : MonoBehaviour {
 		hor *= settings.dodgeRadius;
 		ver *= settings.dodgeRadius;
 		
-		refCurPos = Vector3.Lerp(refCurPos , new Vector3(hor, ver , 0.0f ), Time.deltaTime * smooth);
+		refCurPos = Vector3.MoveTowards(refCurPos , new Vector3(hor, ver , 0.0f ), Time.deltaTime * smooth * settings.dodgeRadius);
 		transform.position = refCurPos;
 		
 		// GESTION DE LA CAMERA
@@ -61,7 +62,7 @@ public class CamControlScript : MonoBehaviour {
     	float tiltAroundX = Input.GetAxis("Vertical") * tiltAngle;
     	var target = Quaternion.Euler (tiltAroundX, -tiltAroundY, 0.0f);
     	
-    	transform.rotation = Quaternion.Slerp(transform.rotation, target, Time.deltaTime * smooth);
+    	transform.rotation = Quaternion.Slerp(transform.rotation, target, Time.deltaTime * smoothAngle);
 	}
 	
 	public void NotifyCubeDeath(Transform cube) {
