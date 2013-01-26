@@ -7,11 +7,15 @@ public class CamControlScript : MonoBehaviour {
 	public Vector3 MoveDirection = Vector3.zero;
 	private GlobalSettings settings;
 	private Vector3 refCurPos;
+	private GameObject GOacceptance;
+	private GameObject GOavoidance;
 	
 	// Use this for initialization
 	void Start () {
 		settings = GameObject.Find("GlobalObject").GetComponent<GlobalSettings>();
 		refCurPos = transform.position;
+		GOacceptance = GameObject.FindGameObjectWithTag("Acceptance");
+		GOavoidance = GameObject.FindGameObjectWithTag("Avoidance");
 	}
 	// Update is called once per frame
 	void Update () {
@@ -64,10 +68,16 @@ public class CamControlScript : MonoBehaviour {
 		Vector3 dist = cube.position - transform.position;
 		dist.z = 0.0f;
 		
-		if (dist.sqrMagnitude < settings.dodgeRadius * settings.dodgeRadius * 0.25f)
+		if (dist.sqrMagnitude < settings.dodgeRadius * settings.dodgeRadius * 0.25f){
 			Debug.Log((int)Time.time+": CUBE ACCEPTED");
-		else
+			settings.accepted ++;
+//			GOacceptance.transform.localScale = new Vector3(0.1f,0.1f,settings.acceptance*0.01f);
+//			GOavoidance.transform.localScale = new Vector3(0.1f,0.1f,settings.avoidance*0.01f);
+		}else{
 			Debug.Log((int)Time.time+": CUBE AVOIDED");
+			settings.avoided ++;
+//			GOavoidance.transform.localScale = new Vector3(0.1f,0.1f,settings.acceptance*0.01f);
+//			GOacceptance.transform.localScale = new Vector3(0.1f,0.1f,settings.avoidance*0.01f);
+		}
 	}
-	
 }

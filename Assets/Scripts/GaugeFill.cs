@@ -4,22 +4,24 @@ using System.Collections;
 public class GaugeFill : MonoBehaviour {
 	
 	private GlobalSettings settings;
-	private GameObject acceptance;
-	private GameObject avoidance;
+	private GameObject GOacceptance;
+	private GameObject GOavoidance;
 	
 	// Use this for initialization
 	void Start () {
 		settings = GameObject.Find("GlobalObject").GetComponent<GlobalSettings>();
-		acceptance = GameObject.FindGameObjectWithTag("Acceptance");
-		avoidance = GameObject.FindGameObjectWithTag("Avoidance");
+		GOacceptance = GameObject.FindGameObjectWithTag("Acceptance");
+		GOavoidance = GameObject.FindGameObjectWithTag("Avoidance");
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		settings.collectance =  settings.collected / (settings.avoided+1) ;
-		settings.avoidance = settings.avoided / (settings.collected+1) ;
+		settings.acceptance =  settings.accepted - (settings.avoided+1) ;
+		settings.avoidance = settings.avoided - (settings.accepted+1) ;
+		Debug.Log(settings.accepted + " Mo'Ai Accepted, " + settings.avoided + " Mo'Ai avoided");
+		Debug.Log("For an acceptance ratio of " + settings.acceptance*0.1f);
 		
-		
-		
+		GOacceptance.transform.localScale = new Vector3(0.1f,0.1f,settings.acceptance*0.01f);
+		GOavoidance.transform.localScale = new Vector3(0.1f,0.1f,settings.avoidance*0.01f);
 	}
 }

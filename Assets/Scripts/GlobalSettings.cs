@@ -6,10 +6,10 @@ public class GlobalSettings : MonoBehaviour {
 	public float spawnDistance = 20.0f;
 	public int gridDepth = 10;
 	
-	public float collectance = 0.0f;
+	public float acceptance = 0.0f;
 	public float avoidance = 0.0f;
-	public int collected = 0;
-	public int avoided = 0;
+	public float accepted = 0;
+	public float avoided = 0;
 	
 	public float dodgeRadius = 2.0f;
 	
