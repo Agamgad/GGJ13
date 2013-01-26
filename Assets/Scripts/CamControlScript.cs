@@ -3,20 +3,27 @@ using System.Collections;
 
 public class CamControlScript : MonoBehaviour {
 	
+	public AnimationCurve transition;
 	public Vector3 MoveDirection = Vector3.zero;
 	private GlobalSettings settings;
+	private Vector3 refCurPos;
 	
 	// Use this for initialization
 	void Start () {
 		settings = GameObject.Find("GlobalObject").GetComponent<GlobalSettings>();
+		refCurPos = transform.position;
 	}
 	// Update is called once per frame
 	void Update () {
+
 		var hor = 0f;
 		var ver = 0f;
 		float smooth = 2.0f;
 		float tiltAngle = 30.0f;
+		float curT = transition.Evaluate(Mathf.Repeat(Time.time, settings.GetBeat()));
+		curT = curT*2.0f-1.0f;
 		
+		// GESTION DE L'INPUT
    		if(Input.GetAxis("Horizontal") < 0 ){
 			hor = Mathf.Floor(Input.GetAxis("Horizontal"));
 		} else {
@@ -31,14 +38,25 @@ public class CamControlScript : MonoBehaviour {
 		hor *= settings.dodgeRadius;
 		ver *= settings.dodgeRadius;
 		
-		transform.position = Vector3.Lerp(transform.position , new Vector3(hor, ver , 0.0f ), Time.deltaTime * smooth);
-		//print (ADPosition.x);
+		refCurPos = Vector3.Lerp(refCurPos , new Vector3(hor, ver , 0.0f ), Time.deltaTime * smooth);
+		transform.position = refCurPos;
 		
+		// GESTION DE LA CAMERA
+		// Oscillation
+		Vector3 refCurCamPos = transform.position;
+		refCurCamPos.y += curT * settings.dodgeRadius * 0.2f;
+		transform.position = refCurCamPos;
+		
+		Quaternion refCurCamRot = transform.rotation;
+		refCurCamRot.x += curT * 0.01f;
+		transform.rotation = refCurCamRot;
+		
+		// Angle
 		float tiltAroundY = Input.GetAxis("Horizontal") * tiltAngle;
     	float tiltAroundX = Input.GetAxis("Vertical") * tiltAngle;
     	var target = Quaternion.Euler (tiltAroundX, -tiltAroundY, 0.0f);
-    	// Dampen towards the target rotation
-    	transform.rotation = Quaternion.Slerp(transform.rotation, target, Time.deltaTime * smooth); 
+    	
+    	transform.rotation = Quaternion.Slerp(transform.rotation, target, Time.deltaTime * smooth);
 	}
 	
 	public void NotifyCubeDeath(Transform cube) {
