@@ -119,3 +119,4 @@ UpgradeLog*.XML
 /GGJ2013.userprefs
 /GGJ2013-csharp.sln
 Library
+/Assembly-UnityScript.pidb

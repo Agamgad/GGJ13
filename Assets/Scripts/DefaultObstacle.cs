@@ -13,16 +13,33 @@ public class DefaultObstacle : MonoBehaviour {
 	
 	private Vector3 refPosition;
 	private Vector3 nextPosition;
-	private int patternPosition;
+	public int patternPosition;
 	
 	// Use this for initialization
 	void Start () {
 		settings = GameObject.Find("GlobalObject").GetComponent<GlobalSettings>();
 		player = GameObject.Find("Player").GetComponent<CamControlScript>();
 		progression = 0.0f;
-		patternPosition = 0;
 		nextPosition = transform.position;
 		ToNextPosition();
+	}
+	
+	public void JumpToPatternPosition(int pos) {
+		
+		patternPosition = 0;
+		for(int i=0; i<pos; ++i)
+		{
+			do
+			{
+				patternPosition += 1;
+				if (patternPosition >= pattern.Length)
+					patternPosition = 0;
+			} while(pattern[patternPosition] != '.');
+			
+			patternPosition += 1;
+			if (patternPosition >= pattern.Length)
+				patternPosition = 0;
+		}
 	}
 	
 	void ToNextPosition() {
@@ -73,13 +90,6 @@ public class DefaultObstacle : MonoBehaviour {
 			ToNextPosition();
 		
 		progression = nextProgression;
-		
-		/*
-		progression += Time.deltaTime / settings.GetBeat();
-		if (progression >= 1.0f) {	
-			progression -= 1.0f;
-			ToNextPosition();
-		}*/
 		
 		float curT = transition.Evaluate(progression);
 		
