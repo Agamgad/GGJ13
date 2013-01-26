@@ -7,6 +7,8 @@ public class DefaultObstacle : MonoBehaviour {
 	public AnimationCurve transition;
 	
 	private GlobalSettings settings;
+	private TempCamControl player;
+	
 	private float progression;
 	
 	private Vector3 refPosition;
@@ -15,7 +17,8 @@ public class DefaultObstacle : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
-		settings = GameObject.Find("GlobalSettings").GetComponent<GlobalSettings>();
+		settings = GameObject.Find("GlobalObject").GetComponent<GlobalSettings>();
+		player = GameObject.Find("Player").GetComponent<TempCamControl>();
 		progression = 0.0f;
 		patternPosition = 0;
 		nextPosition = transform.position;
@@ -35,16 +38,16 @@ public class DefaultObstacle : MonoBehaviour {
 				nextPosition.z += settings.GetGridDistance();
 				break;
 			case 'U':
-				nextPosition.y += settings.GetGridDistance();
+				nextPosition.y += settings.dodgeRadius;
 				break;
 			case 'D':
-				nextPosition.y -= settings.GetGridDistance();
+				nextPosition.y -= settings.dodgeRadius;
 				break;
 			case 'L':
-				nextPosition.x -= settings.GetGridDistance();
+				nextPosition.x -= settings.dodgeRadius;
 				break;
 			case 'R':
-				nextPosition.x += settings.GetGridDistance();
+				nextPosition.x += settings.dodgeRadius;
 				break;
 			default:break;
 			}
@@ -74,7 +77,10 @@ public class DefaultObstacle : MonoBehaviour {
 		
 		transform.position = Vector3.Lerp(refPosition,nextPosition,curT);
 		
-		if (transform.position.z < 0.0f)
-			Destroy(gameObject);
+		if (transform.position.z <= 0.0f)
+		{
+			player.NotifyCubeDeath(transform);
+			Destroy(gameObject);	
+		}
 	}
 }

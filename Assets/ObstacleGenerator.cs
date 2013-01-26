@@ -11,7 +11,7 @@ public class ObstacleGenerator : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
-		settings = GameObject.Find("GlobalSettings").GetComponent<GlobalSettings>();
+		settings = GameObject.Find("GlobalObject").GetComponent<GlobalSettings>();
 		lastGen = Time.time;
 	}
 	

@@ -8,7 +8,7 @@ public class GlobalSettings : MonoBehaviour {
 	
 	
 	public float startBeat = 1.0f;
-	public float dodgeRadius = 1.0f;
+	public float dodgeRadius = 2.0f;
 	
 	
 	// Use this for initialization
@@ -31,5 +31,9 @@ public class GlobalSettings : MonoBehaviour {
 	
 	public float GetGridDistance() {
 		return spawnDistance / gridDepth;
+	}
+	
+	public float GetPlayerSpeed() {
+		return 5.0f * dodgeRadius / GetBeat();
 	}
 }
