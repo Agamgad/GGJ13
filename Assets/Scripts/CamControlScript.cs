@@ -24,7 +24,7 @@ public class CamControlScript : MonoBehaviour {
 		var ver = 0f;
 		float smooth = 4.0f;
 		float smoothAngle = 2.0f;
-		float tiltAngle = 30.0f;
+		float tiltAngle = 20.0f;
 		//float curT = transition.Evaluate(Mathf.Repeat(Time.time, settings.GetBeat()));
 		float curT = transition.Evaluate(settings.GetBeatProgression(4));
 		curT = curT*2.0f-1.0f;
@@ -72,13 +72,23 @@ public class CamControlScript : MonoBehaviour {
 		if (dist.sqrMagnitude < settings.dodgeRadius * settings.dodgeRadius * 0.25f){
 			Debug.Log((int)Time.time+": CUBE ACCEPTED");
 			settings.accepted ++;
-//			GOacceptance.transform.localScale = new Vector3(0.1f,0.1f,settings.acceptance*0.01f);
-//			GOavoidance.transform.localScale = new Vector3(0.1f,0.1f,settings.avoidance*0.01f);
+			if (settings.accepted > 10){
+				settings.accepted = 10;
+			}
+			settings.avoided --;
+			if (settings.avoided < 0){
+				settings.avoided = 0;
+			}
 		}else{
 			Debug.Log((int)Time.time+": CUBE AVOIDED");
 			settings.avoided ++;
-//			GOavoidance.transform.localScale = new Vector3(0.1f,0.1f,settings.acceptance*0.01f);
-//			GOacceptance.transform.localScale = new Vector3(0.1f,0.1f,settings.avoidance*0.01f);
+			if (settings.avoided > 10){
+				settings.avoided = 10;
+			}
+			settings.accepted --;
+			if (settings.accepted < 0){
+				settings.accepted = 0;
+			}
 		}
 	}
 }

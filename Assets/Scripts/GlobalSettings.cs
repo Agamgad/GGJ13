@@ -11,7 +11,7 @@ public class GlobalSettings : MonoBehaviour {
 	public float accepted = 0;
 	public float avoided = 0;
 	
-	public float dodgeRadius = 2.0f;
+	public float dodgeRadius = 1.5f;
 	
 	public AudioSource source;
 	public int nbBeats;
