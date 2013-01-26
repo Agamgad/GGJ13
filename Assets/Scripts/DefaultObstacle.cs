@@ -7,7 +7,7 @@ public class DefaultObstacle : MonoBehaviour {
 	public AnimationCurve transition;
 	
 	private GlobalSettings settings;
-	private TempCamControl player;
+	private CamControlScript player;
 	
 	private float progression;
 	
@@ -18,7 +18,7 @@ public class DefaultObstacle : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		settings = GameObject.Find("GlobalObject").GetComponent<GlobalSettings>();
-		player = GameObject.Find("Player").GetComponent<TempCamControl>();
+		player = GameObject.Find("Player").GetComponent<CamControlScript>();
 		progression = 0.0f;
 		patternPosition = 0;
 		nextPosition = transform.position;
