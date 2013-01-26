@@ -20,7 +20,8 @@ public class CamControlScript : MonoBehaviour {
 		var ver = 0f;
 		float smooth = 2.0f;
 		float tiltAngle = 30.0f;
-		float curT = transition.Evaluate(Mathf.Repeat(Time.time, settings.GetBeat()));
+		//float curT = transition.Evaluate(Mathf.Repeat(Time.time, settings.GetBeat()));
+		float curT = transition.Evaluate(settings.GetBeatProgression());
 		curT = curT*2.0f-1.0f;
 		
 		// GESTION DE L'INPUT

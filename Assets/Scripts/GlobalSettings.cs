@@ -10,10 +10,13 @@ public class GlobalSettings : MonoBehaviour {
 	public float startBeat = 1.0f;
 	public float dodgeRadius = 2.0f;
 	
+	public AudioSource source;
+	public int nbBeats;
+	
 	
 	// Use this for initialization
 	void Start () {
-	
+		startBeat = source.clip.length / ((float)nbBeats);
 	}
 	
 	// Update is called once per frame
@@ -21,19 +24,25 @@ public class GlobalSettings : MonoBehaviour {
 	
 	}
 	
-	public float GetBeat() {
+	/*public float GetBeat() {
 		return startBeat;
+	}*/
+	
+	public float GetBeatProgression() {
+		float beatLength = ((float)audio.clip.samples) / ((float)nbBeats);
+		float ret = Mathf.Repeat(((float)audio.timeSamples),beatLength) / beatLength;
+		return ret;
 	}
 	
-	public float GetObstacleSpeed() {
+	/*public float GetObstacleSpeed() {
 		return GetBeat() * GetGridDistance();
-	}
+	}*/
 	
 	public float GetGridDistance() {
 		return spawnDistance / gridDepth;
 	}
 	
-	public float GetPlayerSpeed() {
+	/*public float GetPlayerSpeed() {
 		return 5.0f * dodgeRadius / GetBeat();
-	}
+	}*/
 }

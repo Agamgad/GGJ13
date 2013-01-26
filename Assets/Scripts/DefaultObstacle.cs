@@ -67,11 +67,19 @@ public class DefaultObstacle : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		progression += settings.GetBeat() * Time.deltaTime;
-		if (progression > 1.0f) {	
+		float nextProgression = settings.GetBeatProgression();
+		
+		if (nextProgression < progression)
+			ToNextPosition();
+		
+		progression = nextProgression;
+		
+		/*
+		progression += Time.deltaTime / settings.GetBeat();
+		if (progression >= 1.0f) {	
 			progression -= 1.0f;
 			ToNextPosition();
-		}
+		}*/
 		
 		float curT = transition.Evaluate(progression);
 		

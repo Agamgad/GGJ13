@@ -7,20 +7,21 @@ public class ObstacleGenerator : MonoBehaviour {
 	
 	private GlobalSettings settings;
 	
-	private float lastGen;
+	private float lastBeat;
 	
 	// Use this for initialization
 	void Start () {
 		settings = GameObject.Find("GlobalObject").GetComponent<GlobalSettings>();
-		lastGen = Time.time;
+		lastBeat = 0.0f;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if (lastGen + settings.GetBeat() < Time.time)
+		float nextBeat = settings.GetBeatProgression();
+		if (nextBeat < lastBeat)
 		{
 			Instantiate(toGenerate, new Vector3(0.0f,0.0f, settings.spawnDistance), new Quaternion());
-			lastGen = Time.time;
 		}
+		lastBeat = nextBeat;
 	}
 }
