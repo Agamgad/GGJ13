@@ -47,7 +47,35 @@ public class DefaultObstacle : MonoBehaviour {
 		
 		while(pattern[patternPosition] != '.')
 		{
-			switch (pattern[patternPosition]) {
+			char mvt = pattern[patternPosition];
+			
+			if ((mvt == 'A' || mvt == 'H')
+			&&	(refPosition.x != 0.0f || refPosition.y != 0.0f)) {
+				if (refPosition.y < -0.1f) {
+					if (refPosition.x < 0.4f)
+						mvt = mvt == 'A' ? 'R' : 'U';
+					else if (refPosition.x >= 0.4f && refPosition.x <= 0.6f)
+						mvt = mvt == 'A' ? 'R' : 'L';
+					else if (refPosition.x > 0.6f)
+						mvt = mvt == 'A' ? 'U' : 'L';		
+				}
+				else if (refPosition.y >= -0.1f && refPosition.y <= 0.1f) {
+					if (refPosition.x < 0.4f)
+						mvt = mvt == 'A' ? 'D' : 'U';
+					else if (refPosition.x > 0.6f)
+						mvt = mvt == 'A' ? 'U' : 'D';
+				}
+				else if (refPosition.y > 0.1f) {
+					if (refPosition.x < 0.4f)
+						mvt = mvt == 'A' ? 'D' : 'R';
+					else if (refPosition.x >= 0.4f && refPosition.x <= 0.6f)
+						mvt = mvt == 'A' ? 'L' : 'R';
+					else if (refPosition.x > 0.6f)
+						mvt = mvt == 'A' ? 'L' : 'D';		
+				}
+			}
+			
+			switch (mvt) {
 			case 'F':
 				nextPosition.z -= settings.GetGridDistance();
 				break;
