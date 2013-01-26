@@ -20,7 +20,8 @@ public class ObstacleGenerator : MonoBehaviour {
 		float nextBeat = settings.GetBeatProgression();
 		if (nextBeat < lastBeat)
 		{
-			Instantiate(toGenerate, new Vector3(0.0f,0.0f, settings.spawnDistance), new Quaternion());
+			Transform obj = Instantiate(toGenerate) as Transform;
+			obj.transform.position = new Vector3(0.0f,0.0f, settings.spawnDistance);
 		}
 		lastBeat = nextBeat;
 	}
