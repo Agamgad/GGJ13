@@ -115,33 +115,35 @@ public class DefaultObstacle : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		float nextProgression = settings.GetBeatProgression();
-		
-		if (nextProgression < progression)
-			ToNextPosition();
-		
-		progression = nextProgression;
-		
-		float curT = transition.Evaluate(progression);
-		
-		transform.position = Vector3.Lerp(refPosition,nextPosition,curT);
-		
-		if (vanishAlpha < 1.0f) {
+		if (!settings.isPaused) {
+			float nextProgression = settings.GetBeatProgression();
 			
-			vanishAlpha -= Time.deltaTime;
-			if (vanishAlpha <= 0.0f)
-				Destroy(gameObject);
-			else {
-				SetAlpha(vanishAlpha);
+			if (nextProgression < progression)
+				ToNextPosition();
+			
+			progression = nextProgression;
+			
+			float curT = transition.Evaluate(progression);
+			
+			transform.position = Vector3.Lerp(refPosition,nextPosition,curT);
+			
+			if (vanishAlpha < 1.0f) {
+				
+				vanishAlpha -= Time.deltaTime;
+				if (vanishAlpha <= 0.0f)
+					Destroy(gameObject);
+				else {
+					SetAlpha(vanishAlpha);
+				}
 			}
-		}
-		else if (transform.position.z <= 0.0f) {
-			player.NotifyCubeDeath(transform);
-			Vanish();
-		}
-		else {
-			float a = Mathf.InverseLerp(settings.spawnDistance,settings.spawnDistance*0.75f,transform.position.z);
-			SetAlpha(Mathf.Clamp01(a));
+			else if (transform.position.z <= 0.0f) {
+				player.NotifyCubeDeath(transform);
+				Vanish();
+			}
+			else {
+				float a = Mathf.InverseLerp(settings.spawnDistance,settings.spawnDistance*0.75f,transform.position.z);
+				SetAlpha(Mathf.Clamp01(a));
+			}
 		}
 	}
 	

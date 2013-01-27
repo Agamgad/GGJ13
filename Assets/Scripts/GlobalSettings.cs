@@ -13,14 +13,17 @@ public class GlobalSettings : MonoBehaviour {
 	
 	public float dodgeRadius = 1.5f;
 	
-	public AudioSource source;
+	public AudioSource music;
+	public AudioSource didge;
+	public AudioSource moai;
+	public AudioSource gapaga;
+	public AudioSource faky;
 	public int nbBeats;
 	
 	public AudioClip[] clips;
 	public GameObject[] generators;
 	
-	public AudioSource moai;
-	
+	public bool isPaused = false;
 	public int currentStage = 0;
 	public bool toNextStageAtEnd = false;
 	private int lastTimeSamples = 0;
@@ -35,7 +38,7 @@ public class GlobalSettings : MonoBehaviour {
 	void Update () {
 	
 		
-		int curTimeSamples = source.timeSamples;
+		int curTimeSamples = music.timeSamples;
 		if (curTimeSamples < lastTimeSamples && toNextStageAtEnd) {
 			ToNextStage();
 		}
@@ -49,9 +52,9 @@ public class GlobalSettings : MonoBehaviour {
 		{
 			++currentStage;
 			
-			source.Stop();
-			source.clip = clips[currentStage];
-			source.Play();
+			music.Stop();
+			music.clip = clips[currentStage];
+			music.Play();
 			
 			if (currentStage != 0)
 				generators[currentStage-1].SetActive(false);

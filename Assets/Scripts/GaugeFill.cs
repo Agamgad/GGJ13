@@ -61,6 +61,7 @@ public class GaugeFill : MonoBehaviour {
 	//	Debug.Log("For an acceptance ratio of " + settings.acceptance*0.1f);
 		
 		GOacceptance.transform.localScale = new Vector3(0.06f,0.1f,settings.acceptance*0.005f);
+		GOacceptance.transform.position = new Vector3(0.0f,0.0f,settings.acceptance*0.01f);
 		GOavoidance.transform.localScale = new Vector3(0.06f,0.1f,settings.avoidance*0.005f);
 	}
 }

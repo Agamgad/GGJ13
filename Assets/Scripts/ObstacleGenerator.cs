@@ -21,23 +21,25 @@ public class ObstacleGenerator : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		float nextBeat = settings.GetBeatProgression();
-		if (nextBeat < lastBeat)
-		{
-			if (patternPosition < 0)
-				patternPosition = settings.GetCurrentBeat(4);
-		
-			char pos = patterns[patternGeneration][patternPosition];
-			if (pos != '.')
-				SpawnMoai(pos);
+		if (!settings.isPaused) {
+			float nextBeat = settings.GetBeatProgression();
+			if (nextBeat < lastBeat)
+			{
+				if (patternPosition < 0)
+					patternPosition = settings.GetCurrentBeat(4);
 			
-			++patternPosition;
-			if (patternPosition >= patterns[patternGeneration].Length) {
-				patternPosition = 0;
-				patternGeneration = Random.Range(0,patterns.Length);
+				char pos = patterns[patternGeneration][patternPosition];
+				if (pos != '.')
+					SpawnMoai(pos);
+				
+				++patternPosition;
+				if (patternPosition >= patterns[patternGeneration].Length) {
+					patternPosition = 0;
+					patternGeneration = Random.Range(0,patterns.Length);
+				}
 			}
+			lastBeat = nextBeat;
 		}
-		lastBeat = nextBeat;
 	}
 	
 	void SpawnMoai(int x, int y) {
