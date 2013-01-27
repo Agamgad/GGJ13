@@ -14,6 +14,7 @@ public class ObstacleGenerator : MonoBehaviour {
 	private bool isStarted;
 	private float timeCreated;
 	
+	
 	// Use this for initialization
 	void Start () {
 		settings = GameObject.Find("GlobalObject").GetComponent<GlobalSettings>();

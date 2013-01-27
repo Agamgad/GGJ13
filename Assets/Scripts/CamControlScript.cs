@@ -7,15 +7,11 @@ public class CamControlScript : MonoBehaviour {
 	public Vector3 MoveDirection = Vector3.zero;
 	private GlobalSettings settings;
 	private Vector3 refCurPos;
-	private GameObject GOacceptance;
-	private GameObject GOavoidance;
 	
 	// Use this for initialization
 	void Start () {
 		settings = GameObject.Find("GlobalObject").GetComponent<GlobalSettings>();
 		refCurPos = transform.position;
-		GOacceptance = GameObject.FindGameObjectWithTag("Acceptance");
-		GOavoidance = GameObject.FindGameObjectWithTag("Avoidance");
 	}
 	// Update is called once per frame
 	void Update () {
@@ -25,7 +21,6 @@ public class CamControlScript : MonoBehaviour {
 		float smooth = 4.0f;
 		float smoothAngle = 2.0f;
 		float tiltAngle = 20.0f;
-		//float curT = transition.Evaluate(Mathf.Repeat(Time.time, settings.GetBeat()));
 		float curT = transition.Evaluate(settings.GetBeatProgression(4));
 		curT = curT*2.0f-1.0f;
 		
@@ -46,6 +41,16 @@ public class CamControlScript : MonoBehaviour {
 		
 		refCurPos = Vector3.MoveTowards(refCurPos , new Vector3(hor, ver , 0.0f ), Time.deltaTime * smooth * settings.dodgeRadius);
 		transform.position = refCurPos;
+		
+		if (Input.GetButtonDown ("Pause")) {
+	        if (Time.timeScale == 1.0f)
+	            Time.timeScale = 0.0f;
+	        else
+	            Time.timeScale = 1.0f;
+	        // Adjust fixed delta time according to timescale
+	        // The fixed delta time will now be 0.02 frames per real-time second
+	        //Time.fixedDeltaTime = 0.02 * Time.timeScale;
+		}
 		
 		// GESTION DE LA CAMERA
 		// Oscillation
@@ -72,23 +77,11 @@ public class CamControlScript : MonoBehaviour {
 		if (dist.sqrMagnitude < settings.dodgeRadius * settings.dodgeRadius * 0.25f){
 			Debug.Log((int)Time.time+": CUBE ACCEPTED");
 			settings.accepted ++;
-			if (settings.accepted > 10){
-				settings.accepted = 10;
-			}
 			settings.avoided --;
-			if (settings.avoided < 0){
-				settings.avoided = 0;
-			}
 		}else{
 			Debug.Log((int)Time.time+": CUBE AVOIDED");
 			settings.avoided ++;
-			if (settings.avoided > 10){
-				settings.avoided = 10;
-			}
 			settings.accepted --;
-			if (settings.accepted < 0){
-				settings.accepted = 0;
-			}
 		}
 	}
 }

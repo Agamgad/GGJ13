@@ -16,14 +16,49 @@ public class GlobalSettings : MonoBehaviour {
 	public AudioSource source;
 	public int nbBeats;
 	
+	public AudioClip[] clips;
+	public GameObject[] generators;
+	
+	public AudioSource moai;
+	
+	public int currentStage = 0;
+	public bool toNextStageAtEnd = false;
+	private int lastTimeSamples = 0;
 	
 	// Use this for initialization
 	void Start () {
+		currentStage = -1;
+		ToNextStage();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 	
+		
+		int curTimeSamples = source.timeSamples;
+		if (curTimeSamples < lastTimeSamples && toNextStageAtEnd) {
+			ToNextStage();
+		}
+		
+		lastTimeSamples = curTimeSamples;
+	}
+	
+	void ToNextStage() {
+		// transition
+		if (currentStage < clips.Length)
+		{
+			++currentStage;
+			
+			source.Stop();
+			source.clip = clips[currentStage];
+			source.Play();
+			
+			if (currentStage != 0)
+				generators[currentStage-1].SetActive(false);
+			generators[currentStage].SetActive(true);
+			
+			toNextStageAtEnd = false;
+		}
 	}
 	
 	public float GetBeatProgression(int measure = 1) {
