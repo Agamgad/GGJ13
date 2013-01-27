@@ -57,8 +57,8 @@ public class GaugeFill : MonoBehaviour {
 		if (settings.avoidance < 0){
 			settings.avoidance = 0;
 		}
-		Debug.Log(settings.accepted + " Mo'Ai Accepted, " + settings.avoided + " Mo'Ai avoided");
-		Debug.Log("For an acceptance ratio of " + settings.acceptance*0.1f);
+	//	Debug.Log(settings.accepted + " Mo'Ai Accepted, " + settings.avoided + " Mo'Ai avoided");
+	//	Debug.Log("For an acceptance ratio of " + settings.acceptance*0.1f);
 		
 		GOacceptance.transform.localScale = new Vector3(0.06f,0.1f,settings.acceptance*0.005f);
 		GOavoidance.transform.localScale = new Vector3(0.06f,0.1f,settings.avoidance*0.005f);
