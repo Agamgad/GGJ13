@@ -45,7 +45,7 @@ public class GlobalSettings : MonoBehaviour {
 	
 	void ToNextStage() {
 		// transition
-		if (currentStage < clips.Length)
+		if (currentStage < clips.Length-1)
 		{
 			++currentStage;
 			
@@ -58,6 +58,12 @@ public class GlobalSettings : MonoBehaviour {
 			generators[currentStage].SetActive(true);
 			
 			toNextStageAtEnd = false;
+			
+			//swipe all current cubes
+			GameObject[] moais = GameObject.FindGameObjectsWithTag("Moai");
+			for(int i=0; i<moais.Length; ++i) {
+				moais[i].GetComponent<DefaultObstacle>().Vanish();
+			}
 		}
 	}
 	
@@ -69,6 +75,11 @@ public class GlobalSettings : MonoBehaviour {
 	
 	public bool IsFirstBeat() {
 		return audio.timeSamples < audio.clip.samples / nbBeats;
+	}
+	
+	public int GetCurrentBeat(int measure = 1) {
+		int curBeat = audio.timeSamples /(audio.clip.samples / nbBeats);
+		return curBeat % measure;
 	}
 	
 	public float GetGridDistance() {

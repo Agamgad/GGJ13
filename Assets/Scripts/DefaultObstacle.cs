@@ -15,6 +15,8 @@ public class DefaultObstacle : MonoBehaviour {
 	private Vector3 nextPosition;
 	public int patternPosition;
 	
+	private float vanishAlpha = 1.0f;
+	
 	// Use this for initialization
 	void Start () {
 		settings = GameObject.Find("GlobalObject").GetComponent<GlobalSettings>();
@@ -22,6 +24,7 @@ public class DefaultObstacle : MonoBehaviour {
 		progression = 0.0f;
 		nextPosition = transform.position;
 		ToNextPosition();
+		SetAlpha(0.0f);
 	}
 	
 	public void JumpToPatternPosition(int pos) {
@@ -123,10 +126,32 @@ public class DefaultObstacle : MonoBehaviour {
 		
 		transform.position = Vector3.Lerp(refPosition,nextPosition,curT);
 		
-		if (transform.position.z <= 0.0f)
-		{
-			player.NotifyCubeDeath(transform);
-			Destroy(gameObject);	
+		if (vanishAlpha < 1.0f) {
+			
+			vanishAlpha -= Time.deltaTime;
+			if (vanishAlpha <= 0.0f)
+				Destroy(gameObject);
+			else {
+				SetAlpha(vanishAlpha);
+			}
 		}
+		else if (transform.position.z <= 0.0f) {
+			player.NotifyCubeDeath(transform);
+			Vanish();
+		}
+		else {
+			float a = Mathf.InverseLerp(settings.spawnDistance,settings.spawnDistance*0.75f,transform.position.z);
+			SetAlpha(Mathf.Clamp01(a));
+		}
+	}
+	
+	public void Vanish() {
+		vanishAlpha -= Time.deltaTime;
+	}
+	
+	void SetAlpha(float val) {
+		Color col = gameObject.renderer.material.GetColor("_Color");
+		col.a = val;
+		gameObject.renderer.material.SetColor("_Color",col);
 	}
 }
