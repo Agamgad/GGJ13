@@ -48,10 +48,10 @@ public class GlobalSettings : MonoBehaviour {
 	
 	void ToNextStage() {
 		// transition
-		if (currentStage < clips.Length-1)
-		{
-			++currentStage;
-			
+		
+		++currentStage;
+		
+		if (currentStage < clips.Length) {
 			music.Stop();
 			music.clip = clips[currentStage];
 			music.Play();
@@ -67,6 +67,8 @@ public class GlobalSettings : MonoBehaviour {
 			for(int i=0; i<moais.Length; ++i) {
 				moais[i].GetComponent<DefaultObstacle>().Vanish();
 			}
+		} else {
+			Application.LoadLevel("Fin");	
 		}
 	}
 	

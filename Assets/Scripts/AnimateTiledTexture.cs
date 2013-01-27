@@ -7,21 +7,32 @@ class AnimateTiledTexture : MonoBehaviour
     public int rows = 2;
 	public bool invertRowProgression = true;
 	public bool bounce = false;
+	public bool randomize = true;
     public float framesPerSecond = 10f;
  
     //the current frame to display
-    private int currentCol = 0;
-	private int currentRow = 0;
+    private int currentCol;
+	private int currentRow;
 	
 	private bool returning = false;
  
     void Start()
     {
+		currentCol = 0;
+		currentRow = 0;
+		
+		if (randomize) {
+			int nbInc = Random.Range(0,rows*columns);
+			for(int i=0; i<nbInc; ++i) {
+				IncrementFrame();
+			}
+		}
+		
         StartCoroutine(updateTiling());
  
         //set the tile size of the texture (in UV units), based on the rows and columns
         Vector2 size = new Vector2(1f / columns, 1f / rows);
-        renderer.sharedMaterial.SetTextureScale("_MainTex", size);
+        renderer.material.SetTextureScale("_MainTex", size);
     }
  
     private IEnumerator updateTiling()
@@ -38,7 +49,7 @@ class AnimateTiledTexture : MonoBehaviour
             Vector2 offset = new Vector2(((float)currentCol) / columns, //x index
                                          ((float)(invertRowProgression ? rows - currentRow - 1 : currentRow)) / rows);   //y index
  
-            renderer.sharedMaterial.SetTextureOffset("_MainTex", offset);
+            renderer.material.SetTextureOffset("_MainTex", offset);
  
             yield return new WaitForSeconds(1f / framesPerSecond);
         }
